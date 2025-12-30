@@ -26,5 +26,3 @@ Running the Application python app/api.py The API will be available at: http://l
 Configuration Environment variables are managed via .env: OPENAI_API_KEY=your_api_key VECTOR_DB_TYPE=pymilvus EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
 
 This project is for my own educational purposes.
-
-image image
