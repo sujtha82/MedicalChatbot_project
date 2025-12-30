@@ -2,7 +2,7 @@ import numpy as np
 from rank_bm25 import BM25Okapi
 from sentence_transformers import SentenceTransformer, util, CrossEncoder
 from backend.chunking_manager2 import ChunkingManager
-from backend.simple_vectordb_manager import SimpleVectorManager  # ✅ Fixed typo: simple_vectordb_manager → simple_vector_manager
+from backend.simple_vectordb_manager import SimpleVectorManager  # Fixed typo: simple_vectordb_manager → simple_vector_manager
 
 import os
 from dotenv import load_dotenv
@@ -81,7 +81,7 @@ def hybrid_retrieve(query, alpha=0.6, top_k=6, filters=None):
 # ------------------------------------------------------
 def retrieve_semantic(query, top_k=5):
     """Retrieve claims using semantic search only"""
-    return vector_manager.semantic_search(query, top_k=top_k)  # ✅ Updated to vector_manager
+    return vector_manager.semantic_search(query, top_k=top_k)  # 
 
 # ------------------------------------------------------
 # LLM Setup (LangChain or fallback)
@@ -192,7 +192,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# ✅ Initialize Milvus
+# Initialize Milvus
 print(" Initializing Milvus vector database...")
 #milvus_manager = MilvusManager(host='localhost', port='19530')
 vector_manager = SimpleVectorManager()
@@ -254,3 +254,4 @@ def hybrid_retrieve(query, alpha=0.6, top_k=6, filters=None):
 # Keep the rest of your existing code (LLM setup, reranking, etc.)
 
 # ... [your existing LLM setup and other functions] ..."""
+
