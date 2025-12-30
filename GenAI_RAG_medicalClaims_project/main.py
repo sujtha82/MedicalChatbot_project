@@ -10,9 +10,9 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# ✅ Initialize Vector Database
-print("🚀 Initializing Vector Database...")
-vector_manager = SimpleVectorManager()  # ✅ Using SimpleVectorManager instead of Milvus
+#  Initialize Vector Database
+print(" Initializing Vector Database...")
+vector_manager = SimpleVectorManager()  #  Using SimpleVectorManager instead of Milvus
 
 # ------------------------------------------------------
 # Load and Process Documents
@@ -36,10 +36,10 @@ documents = list(set(page_chunks + semantic_chunks + recursive_chunks + sliding_
 
 print(f"📄 Total chunks loaded: {len(documents)}")
 
-# ✅ Insert documents into Vector Database
+#  Insert documents into Vector Database
 print("💾 Storing documents in Vector Database...")
-vector_manager.insert_claims(documents)  # ✅ Updated to vector_manager
-print(f"✅ Vector Database stats: {vector_manager.get_collection_stats()}")  # ✅ Updated to vector_manager
+vector_manager.insert_claims(documents)  #  Updated to vector_manager
+print(f" Vector Database stats: {vector_manager.get_collection_stats()}")  #  Updated to vector_manager
 
 # ------------------------------------------------------
 # BM25 Keyword Retriever (Keep for hybrid search)
@@ -65,7 +65,7 @@ def hybrid_retrieve(query, alpha=0.6, top_k=6, filters=None):
     bm25_docs = [documents[i] for i in bm25_indices]
     
     # Use Vector Database for hybrid search
-    candidate_docs = vector_manager.hybrid_search(  # ✅ Updated to vector_manager
+    candidate_docs = vector_manager.hybrid_search(  #  Updated to vector_manager
         query=query,
         bm25_results=bm25_docs,
         alpha=alpha,
@@ -73,7 +73,7 @@ def hybrid_retrieve(query, alpha=0.6, top_k=6, filters=None):
         # Note: SimpleVectorManager doesn't support filters yet
     )
     
-    print(f"🔍 Hybrid search found {len(candidate_docs)} candidates")
+    print(f" Hybrid search found {len(candidate_docs)} candidates")
     return candidate_docs
 
 # ------------------------------------------------------
@@ -106,12 +106,12 @@ try:
     from langchain.chains import LLMChain
     from langchain.llms import HuggingFaceHub
     
-    print("✅ All LangChain imports successful!")
+    print("All LangChain imports successful!")
     
     # Check if API token is loaded from .env
     api_token = os.getenv("HUGGINGFACEHUB_API_TOKEN")
     if not api_token:
-        print("❌ HUGGINGFACEHUB_API_TOKEN not found in .env file")
+        print(" HUGGINGFACEHUB_API_TOKEN not found in .env file")
         raise Exception("Missing HuggingFace API token in .env")
     
     print(f"🔑 API Token: {api_token[:10]}...")
@@ -120,7 +120,7 @@ try:
         template=prompt_template, 
         input_variables=["context", "question"]
     )
-    print("✅ PromptTemplate created successfully!")
+    print(" PromptTemplate created successfully!")
     
     llm = HuggingFaceHub(
         repo_id="google/flan-t5-base",
@@ -129,14 +129,14 @@ try:
             "max_length": 512
         }
     )
-    print("✅ HuggingFaceHub LLM initialized!")
+    print(" HuggingFaceHub LLM initialized!")
     
     qa_chain = LLMChain(llm=llm, prompt=prompt)
-    print("✅ LangChain LLM setup successful!")
+    print(" LangChain LLM setup successful!")
     
 except Exception as e:
-    print(f"❌ LangChain setup failed: {e}")
-    print("⚠️ Using fallback LLM")
+    print(f" LangChain setup failed: {e}")
+    print("Using fallback LLM")
 
     class _FallbackChain:
         def run(self, inputs):
@@ -160,24 +160,24 @@ def rerank_with_crossencoder(query, candidate_docs, top_k=3):
 # QA Function (for Gradio)
 # ------------------------------------------------------
 def get_answer(query):
-    print(f"🔍 Processing query: '{query}'")
+    print(f" Processing query: '{query}'")
     
     candidates = hybrid_retrieve(query, alpha=0.6, top_k=6)
-    print(f"📄 Retrieved {len(candidates)} candidate chunks")
+    print(f" Retrieved {len(candidates)} candidate chunks")
     
     reranked = rerank_with_crossencoder(query, candidates, top_k=3)
-    print(f"🎯 Reranked to {len(reranked)} chunks")
+    print(f" Reranked to {len(reranked)} chunks")
     
     context = "\n".join(reranked)
-    print(f"📝 Context length: {len(context)} characters")
+    print(f" Context length: {len(context)} characters")
     
     try:
         print("🤖 Calling LLM...")
         response = qa_chain.run({"context": context, "question": query})
-        print(f"✅ LLM Response generated: {response[:100]}...")
+        print(f" LLM Response generated: {response[:100]}...")
         return response
     except Exception as e:
-        print(f"❌ LLM Error: {e}")
+        print(f" LLM Error: {e}")
         return f"Error: {str(e)}"
     
     """import numpy as np
@@ -193,7 +193,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # ✅ Initialize Milvus
-print("🚀 Initializing Milvus vector database...")
+print(" Initializing Milvus vector database...")
 #milvus_manager = MilvusManager(host='localhost', port='19530')
 vector_manager = SimpleVectorManager()
 
@@ -219,11 +219,11 @@ documents = list(set(page_chunks + semantic_chunks + recursive_chunks + sliding_
 
 print(f"📄 Total chunks loaded: {len(documents)}")
 
-# ✅ Insert documents into Milvus
-#print("💾 Storing documents in Milvus...")
+#  Insert documents into Milvus
+#print("Storing documents in Milvus...")
 #milvus_manager.insert_claims(documents)
 vector_manager.insert_claims(documents)
-print(f"✅ Milvus collection stats: {milvus_manager.get_collection_stats()}")
+print(f" Milvus collection stats: {milvus_manager.get_collection_stats()}")
 
 # ------------------------------------------------------
 # BM25 Keyword Retriever (Keep for hybrid search)
@@ -252,4 +252,5 @@ def hybrid_retrieve(query, alpha=0.6, top_k=6, filters=None):
     return milvus_manager.semantic_search(query, top_k=top_k, filters=filters)
 
 # Keep the rest of your existing code (LLM setup, reranking, etc.)
+
 # ... [your existing LLM setup and other functions] ..."""
